@@ -27,6 +27,7 @@ namespace IoTConsoleAPI.Helpers
         public string DeviceSpec { get; set; }
         public string LocationId { get; set; }
         public string LocationName { get; set; }
+        public bool IsActive { get; set; }
     }
 
     public class DeviceAndLocation

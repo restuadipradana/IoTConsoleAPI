@@ -137,7 +137,11 @@ namespace IoTConsoleAPI.Controllers
 
         [HttpPost("add-devicelocation")]
         public async Task<IActionResult> AddDeviceLocation(DeviceLocationDTO dl)
-        {            
+        {          
+            if (await _settingService.SequenceCheckExists(dl.Sequence))
+            {
+                return BadRequest(await _settingService.FeedbackMessage("SeqEx"));
+            }  
             if (await _settingService.AddDeviceLocation(dl))
             {
                 return NoContent();
@@ -150,12 +154,31 @@ namespace IoTConsoleAPI.Controllers
         [HttpPost("edit-devicelocation")]
         public async Task<IActionResult> EditDeviceLocation(DeviceLocationDTO dl)
         {
+            // if (await _settingService.SequenceCheckExists(dl.Sequence))
+            // {
+            //     return BadRequest(await _settingService.FeedbackMessage("SeqEx"));
+            // }  
             if (await _settingService.EditDeviceLocation(dl))
             {
                 return NoContent();
             }
+            else 
+            {
+                return BadRequest(await _settingService.FeedbackMessage("SeqEx"));
+            }
             
             throw new Exception("Editing the Device Location  failed on save");
+        }
+
+        [HttpPost("delete-devicelocation")]
+        public async Task<IActionResult> DeleteDeviceLocation(DeviceLocationDTO dl)
+        {
+            if (await _settingService.DeleteDeviceLocation(dl))
+            {
+                return NoContent();
+            }
+            
+            throw new Exception("Delet the Device Location  failed on save");
         }
     }
 }

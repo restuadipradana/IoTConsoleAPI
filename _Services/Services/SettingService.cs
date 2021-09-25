@@ -135,7 +135,9 @@ namespace IoTConsoleAPI._Services.Services
                             DeviceId = a.DeviceId,
                             LocationId = a.LocationId,
                             DeviceSpec = c.DeviceSpec,
-                            LocationName = d.LocationName
+                            LocationName = d.LocationName,
+                            IsActive = a.IsActive
+                            
                         }).ToListAsync();
 
             return data;
@@ -172,8 +174,16 @@ namespace IoTConsoleAPI._Services.Services
             if (!exist) {
                 throw new Exception("ProductNotExist");
             }
+            
             var editData = _mapper.Map<DeviceLocation>(dl);
             var oldData = _context.DeviceLocation.AsNoTracking().Where(x => x.Id == dl.Id).Single(); //  .Find(editData.Id);
+            if (oldData.Sequence != editData.Sequence)
+            {
+                if (await _context.DeviceLocation.AnyAsync(x => x.Sequence == dl.Sequence))
+                {
+                    return false;
+                }
+            }
             var dvcData =  _context.Device.Where(x => x.DeviceId == oldData.DeviceId).AsQueryable().Single();
             dvcData.IsActive = false;
             _context.Device.Update(dvcData);
@@ -189,6 +199,33 @@ namespace IoTConsoleAPI._Services.Services
             _context.DeviceLocation.Update(editData);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<bool> DeleteDeviceLocation(DeviceLocationDTO dl)
+        {
+            var delData = _mapper.Map<DeviceLocation>(dl);
+            _context.DeviceLocation.Remove(delData);
+            var dvcData =  _context.Device.Where(x => x.DeviceId == delData.DeviceId).AsQueryable().Single();
+            dvcData.IsActive = false;
+            _context.Device.Update(dvcData);
+            var locData =  _context.Location.Where(x => x.LocationId == delData.LocationId).AsQueryable().Single();
+            locData.IsActive = false;
+            _context.Location.Update(locData);
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> SequenceCheckExists(int sequence)
+        {
+            if (await _context.DeviceLocation.AnyAsync(x => x.Sequence == sequence))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
 

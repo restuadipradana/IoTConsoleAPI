@@ -24,7 +24,8 @@ namespace IoTConsoleAPI._Services.Interfaces
          Task<DeviceAndLocation> FetchAvailableDevice_Location();
          Task<bool> AddDeviceLocation(DeviceLocationDTO dl);
          Task<bool> EditDeviceLocation(DeviceLocationDTO dl);
-
+         Task<bool> DeleteDeviceLocation(DeviceLocationDTO dl);
+         Task<bool> SequenceCheckExists(int sequence);
          Task<bool> DeviceLocationCheckExists(string id, int kind);
 
          Task<string> FeedbackMessage(string code);
