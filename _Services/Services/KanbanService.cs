@@ -28,13 +28,6 @@ namespace IoTConsoleAPI._Services.Services
             _configMapper = configMapper;
         }
 
-        // public async Task<List<KanbanData>> TodayTemperatureKanban()
-        // {
-        //     var data = await _context.TemperatureData.Select( x => new KanbanData {
-        //         Sequence
-        //     })
-        // }
-
         public async Task<List<TemperatureDataDTO>> TestService() 
         {
             var locName = _context.Location.AsQueryable().ToList();
@@ -72,7 +65,9 @@ namespace IoTConsoleAPI._Services.Services
                     .Take(1)).ToList(); 
             return finalData;
         }
-
+        
+        
+        /* -- ================ Runnning code start here =================== -- */
         public async Task<List<KanbanData>> FetchKanbanTemperature()
         {
             var deviceLocation = _context.DeviceLocation.Where(x => x.IsActive == true).AsEnumerable();

@@ -54,6 +54,7 @@ namespace IoTConsoleAPI
             services.AddScoped<ISensorService, SensorService>();
             services.AddScoped<IKanbanService, KanbanService>();
             services.AddScoped<ISettingService, SettingService>();
+            services.AddScoped<IQueryService, QueryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
