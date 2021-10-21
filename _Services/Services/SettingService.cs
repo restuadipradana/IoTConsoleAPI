@@ -172,7 +172,7 @@ namespace IoTConsoleAPI._Services.Services
         {
             var exist = await _context.DeviceLocation.AnyAsync(x => x.Id == dl.Id);
             if (!exist) {
-                throw new Exception("ProductNotExist");
+                throw new Exception("DeviceLocationNotExist");
             }
             
             var editData = _mapper.Map<DeviceLocation>(dl);

@@ -10,6 +10,8 @@ using IoTConsoleAPI.Helpers;
 
 namespace IoTConsoleAPI.Controllers
 {
+    /*THIS CONTROLLER IS DEPRECATED*/
+
     [ApiController]
     [Route("api/[controller]")]
     public class SensorController : ControllerBase

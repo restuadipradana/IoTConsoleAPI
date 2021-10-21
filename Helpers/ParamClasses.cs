@@ -9,7 +9,7 @@ namespace IoTConsoleAPI.Helpers
         public DateTime EndDate {get; set;}
     }
 
-    public class KanbanData
+    public class KanbanData //store kanban data
     {
         public int Sequence {get; set;}
         public int TemperatureDataId {get; set;}
@@ -19,7 +19,7 @@ namespace IoTConsoleAPI.Helpers
         public DateTime LastUpdate {get; set;}
     }
 
-    public class DeviceLocationView
+    public class DeviceLocationView //maintain service purpose
     {
         public int Id {get; set;}
         public int Sequence { get; set; }
@@ -30,7 +30,7 @@ namespace IoTConsoleAPI.Helpers
         public bool IsActive { get; set; }
     }
 
-    public class DeviceAndLocation
+    public class DeviceAndLocation //maintain service purpose
     {
         public Device[] AvailableDevices {get; set;}
         public Location[] AvailableLocations {get; set;}

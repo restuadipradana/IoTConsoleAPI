@@ -16,6 +16,7 @@ using IoTConsoleAPI.Helpers;
 
 namespace IoTConsoleAPI._Services.Services
 {
+    /*This service is deprecated*/
     public class SensorService : ISensorService
     {
         private readonly DataContext _context;

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IoTConsoleAPI.Data.Models
 {
+    /* THIS DB TABLE IS DEPRECATED*/
     public class BME280data
     {
         [Key]
