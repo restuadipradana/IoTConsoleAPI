@@ -13,10 +13,16 @@ namespace IoTConsoleAPI.Helpers
     {
         public int Sequence {get; set;}
         public int TemperatureDataId {get; set;}
+        public string LocationId {get; set;}
         public string LocationName {get; set;}
         public double Temperature {get; set;}
         public double Humidity {get; set;}
         public DateTime LastUpdate {get; set;}
+        public double MinTemperature { get; set; }
+        public double MinHumidity { get; set; }
+        public double MaxTemperature { get; set; }
+        public double MaxHumidity { get; set; }
+        public DateTime? LastAcknowledgeDate {get; set;}
     }
 
     public class DeviceLocationView //maintain service purpose
@@ -28,6 +34,11 @@ namespace IoTConsoleAPI.Helpers
         public string LocationId { get; set; }
         public string LocationName { get; set; }
         public bool IsActive { get; set; }
+        public double MinTemperature { get; set; }
+        public double MinHumidity { get; set; }
+        public double MaxTemperature { get; set; }
+        public double MaxHumidity { get; set; }
+        public DateTime LastAcknowledgeDate {get; set;}
     }
 
     public class DeviceAndLocation //maintain service purpose

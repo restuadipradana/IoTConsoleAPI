@@ -36,7 +36,14 @@ namespace IoTConsoleAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder => builder.WithOrigins("http://10.11.0.32:1200/")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+                    .SetIsOriginAllowed((host) => true));
+            });
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
             services.AddControllers().AddNewtonsoftJson();
             //Auto Mapper

@@ -10,5 +10,7 @@ namespace IoTConsoleAPI._Services.Interfaces
     {
         Task<List<TemperatureDataDTO>> TestService() ;
         Task<List<KanbanData>> FetchKanbanTemperature();
+        Task<bool> AddAckDate(string location_id, string ack_date);
+        Task<KanbanData> GetSingleDataLocation(string id);
     }
 }

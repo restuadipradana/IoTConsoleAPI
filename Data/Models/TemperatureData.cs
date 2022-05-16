@@ -14,7 +14,7 @@ namespace IoTConsoleAPI.Data.Models
         public double Humidity { get; set; }
         public double Altitude { get; set; }
         public double Pressure { get; set; }
-        public int TimeBucket { get; set; }
+        public int? TimeBucket { get; set; }
         public DateTime DetectAt { get; set; }
         public DateTime InsertAt { get; set; }
     }

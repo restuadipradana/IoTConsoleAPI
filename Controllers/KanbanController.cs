@@ -33,5 +33,23 @@ namespace IoTConsoleAPI.Controllers
             var lists = await _kanbanService.FetchKanbanTemperature();
             return Ok(lists);
         }
+
+        [HttpGet("set-danger-acknowledge")]
+        public async Task<IActionResult> SetAckDanger(string loc_id, string ack_date)
+        {
+            if (await _kanbanService.AddAckDate(loc_id, ack_date))
+            {
+                return NoContent();
+            }
+
+            throw new Exception("Faile to set last ack date");
+        }
+
+        [HttpGet("get-single-data")]
+        public async Task<IActionResult> GetSingleData(string id)
+        {
+            var data = await _kanbanService.GetSingleDataLocation(id);
+            return Ok(data);
+        }
     }
 }

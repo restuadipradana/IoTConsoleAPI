@@ -71,7 +71,7 @@ namespace IoTConsoleAPI._Services.Services
         public async Task<List<KanbanData>> FetchKanbanTemperature()
         {
             var deviceLocation = _context.DeviceLocation.Where(x => x.IsActive == true).AsEnumerable();
-            var locName = _context.Location.AsQueryable().ToList();
+            var locations = _context.Location.AsQueryable().ToList();
             DateTime todays = DateTime.Now.Date;
             DateTime todaye = DateTime.Now.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
             var data =  await _context.TemperatureData.Where(w => w.InsertAt >= todays && w.InsertAt <= todaye)
@@ -86,7 +86,7 @@ namespace IoTConsoleAPI._Services.Services
                     Altitude = x.Altitude,
                     Pressure = x.Pressure,
                     InsertAt = x.InsertAt,
-                    DetectAt = x.DetectAt
+                    DetectAt = x.DetectAt,
                 }).OrderByDescending(o => o.InsertAt)
                 .ToListAsync();
 
@@ -118,9 +118,45 @@ namespace IoTConsoleAPI._Services.Services
                                             TemperatureDataId = c.Id,
                                             Temperature = c.Temperature,
                                             Humidity = c.Humidity,
-                                            LastUpdate = c.InsertAt
+                                            LastUpdate = c.InsertAt,
+                                            MaxTemperature = locations.Where(x => x.LocationId == d.LocationId).Select(s => s.MaxTemperature).FirstOrDefault(),
+                                            MinTemperature = locations.Where(x => x.LocationId == d.LocationId).Select(s => s.MinTemperature).FirstOrDefault(),
+                                            MaxHumidity = locations.Where(x => x.LocationId == d.LocationId).Select(s => s.MaxHumidity).FirstOrDefault(),
+                                            MinHumidity = locations.Where(x => x.LocationId == d.LocationId).Select(s => s.MinHumidity).FirstOrDefault(),
+                                            LastAcknowledgeDate = locations.Where(x => x.LocationId == d.LocationId).Select(s => s.LastAcknowledgeDate).FirstOrDefault(),
+                                            LocationId = d.LocationId
                                         }).ToList();
             return exactlyFinalKanban;
         } 
+
+        public async Task<bool> AddAckDate(string id_data, string ack_date)
+        {
+            int id = Convert.ToInt32(id_data);
+            var temperature_data = await _context.TemperatureData.Where(w => w.Id == id).SingleAsync();
+            var data = await _context.Location.Where(x => x.LocationId == temperature_data.LocationId).SingleAsync();
+            data.LastAcknowledgeDate = Convert.ToDateTime(ack_date);
+            _context.Update(data);
+            _context.SaveChanges();
+            return true;
+            
+        }
+
+        public async Task<KanbanData> GetSingleDataLocation(string id)
+        {
+            //var deviceLocation = _context.DeviceLocation.Where(x => x.IsActive == true).AsEnumerable();
+            var locations =  _context.Location.AsEnumerable();
+            var data =  await _context.TemperatureData.Where(w => w.Id == Convert.ToInt32(id))
+                .Select(x => new KanbanData() {
+                    TemperatureDataId = x.Id,
+                    LocationName = locations.Where(y => y.LocationId == x.LocationId).Select(x => x.LocationName).SingleOrDefault(),
+                    Temperature = x.Temperature,
+                    Humidity = x.Humidity,
+                    LastUpdate = x.InsertAt,
+                    LastAcknowledgeDate = locations.Where(y => y.LocationId == x.LocationId).Select(x => x.LastAcknowledgeDate).SingleOrDefault(),
+                    LocationId = x.LocationId
+                }).OrderByDescending(o => o.LastUpdate).FirstOrDefaultAsync();
+
+            return data;
+        }
     }
 }
